@@ -29,3 +29,28 @@ Create an application to calculate the correct trajectories for three supply shi
    - Calculate the correct trajectory for each of the three ships.
    - Ensure that each ship arrives within the \( x \) days constraint.
 2. Documentation explaining the approach and functional programming principles used.
+
+
+
+
+challenges:
+- must divide the payloads among the ships so they have enough gas to make it
+- must account for gravitational pull of nearby stars along the route
+- must account for different ship weights being sent to the planet
+- must account for the orbit of earth and mars, as well as where the ship is being launched from
+- must connect with mars orbit so the rocket doesnt just nuke mars and kill everyone on it
+- must avoid a few asteroid fields that passes through where we need to go once every day.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
