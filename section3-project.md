@@ -77,6 +77,7 @@ Ship Specifications:
 - Ship A: Mass = 50,000 kg, Payload = 20,000 kg
 - Ship B: Mass = 55,000 kg, Payload = 22,000 kg
 - Ship C: Mass = 60,000 kg, Payload = 25,000 kg
+  
 Fuel capacity and efficiency to be provided as variables to each student.
 
 Asteroid Field Coordinates and Timing:
