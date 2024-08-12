@@ -94,6 +94,7 @@ Use NASA’s SPICE toolkit or similar tools to generate ephemeris data for Earth
 Provide the data in a format accessible to the students (e.g., CSV files) ** use an API if possible
 - https://www.astro.com/swisseph/swephinfo_e.htm
 - https://github.com/lfborjas/swiss-ephemeris?tab=readme-ov-file#readme
+- DE406 ephemeris files refers to a specific version or release of the Development Ephemeris (DE) series created by the Jet Propulsion Laboratory (JPL) https://ssd.jpl.nasa.gov/ftp/eph/planets/Linux/de406/
 
 Trajectory Calculation Functions:
 Implement functions for Hohmann transfer, gravitational pull calculations, and orbital mechanics.
