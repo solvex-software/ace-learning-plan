@@ -91,6 +91,8 @@ TODO: Simulation Setup:
 Ephemeris Data Generation:
 Use NASA’s SPICE toolkit or similar tools to generate ephemeris data for Earth and Mars.
 Provide the data in a format accessible to the students (e.g., CSV files) ** use an API if possible
+https://www.astro.com/swisseph/swephinfo_e.htm
+https://github.com/lfborjas/swiss-ephemeris?tab=readme-ov-file#readme
 
 Trajectory Calculation Functions:
 Implement functions for Hohmann transfer, gravitational pull calculations, and orbital mechanics.
