@@ -17,9 +17,13 @@
 Modern OO is copying FP because it’s better, but OO compilers can’t handle its requirements
 Why does FP matter? (Immutability, generative testing, pure functions, laziness, etc.)
 
+<Read this to set up your development environment and get used to using the interactive REPL (GHCI)> # todo: link to document on this
+
+
 **Lesson 0 - Think like a Functional Programmer**
 
 How to approach problem solving - every problem is the same
+- 
 How to build an application / what is a functional application?
 Different types of applications have different requirements for safety. FP is hands down better for risky codebases.
 
