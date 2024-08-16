@@ -1,4 +1,4 @@
-# Ace Haskell Tutorial #
+# Haskell Tutorial #
 
 
 
