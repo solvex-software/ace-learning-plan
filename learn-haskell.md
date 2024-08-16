@@ -13,10 +13,12 @@
 
 
 **Introduction**
+
 Modern OO is copying FP because it’s better, but OO compilers can’t handle its requirements
 Why does FP matter? (Immutability, generative testing, pure functions, laziness, etc.)
 
 **Lesson 0 - Think like a Functional Programmer**
+
 How to approach problem solving - every problem is the same
 How to build an application / what is a functional application?
 Different types of applications have different requirements for safety. FP is hands down better for risky codebases.
@@ -26,22 +28,27 @@ Different types of applications have different requirements for safety. FP is ha
 
 
 **Lesson 2 - Immutability Changes Everything**
+
 Currying, pure evaluation forced, benefits of this
 
 
 **Lesson 3 - It's all Patterns**
+
 Pattern matching, guards, and if-else
 
 
 **Lesson 4 - Working with Lists and Sets**
+
 List comprehensions, spines, and folds
 
 
 **Lesson 5 - Combine your Functions**
+
 Common combinators
 
 
 **Lesson 6 - Building Something Real**
+
 Components of a common web/mobile app
 Different types of applications (embedded, realtime, microservices, APIs, etc)
 
