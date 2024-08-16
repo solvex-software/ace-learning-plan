@@ -1,4 +1,4 @@
-# Ace Interview Prep - Haskell Tutorial #
+# Ace Haskell Tutorial #
 
 
 
