@@ -143,7 +143,7 @@ This laziness allows you to work with potentially infinite data structures in a 
 
 ## The Bottom Line: Why You Should Learn Haskell
 
-The industry is moving towards functional programming for good reason. As software systems become more complex, the advantages of FP (immutability, pure functions, laziness, and generative testing) are becoming increasingly clear. While OO languages like C# are trying to incorporate these concepts, they often do so in a way that feels bolted-on rather than native. Haskell, on the other hand, was designed from the ground up with these principles in mind.
+The industry is moving towards functional programming for good reason. As software systems become more complex, and as AI developers become more prevalent, the advantages of FP (immutability, pure functions, laziness, and generative testing) are becoming increasingly clear. While OO languages like C# are trying to incorporate these concepts, they often do so in a way that feels bolted-on rather than native. Haskell, on the other hand, was designed from the ground up with these principles in mind.
 
 By learning Haskell, you’re not just learning a new language. You’re adopting a new way of thinking about programming. This shift in mindset will make you a better developer, no matter what language you ultimately use. Whether you’re working on high-stakes projects at a company like Tesla, developing the next big game at Epic, or simply trying to write better, more reliable code, the skills you gain from learning Haskell will serve you well.
 
