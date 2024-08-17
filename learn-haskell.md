@@ -190,40 +190,94 @@ processPayment cart paymentMethod =
        PayPal account -> -- Process PayPal payment here
 ```
 
+
 ### Taking Baby Steps
-When we have a model of the problem space, we can take baby steps toward solving it. First, we identify what the inputs to our problem are. If the problem is that we need a way to handle payments for our users, the inputs might be the cart of items and the payment method.
 
-For instance, in our payment system, the inputs might include the list of items in the cart, where each item has an ID, name, and price. The solution isn't something we think about yet; instead, we focus on understanding what we have (inputs) and what we want (outputs).
+Once we've modeled the problem space by identifying the inputs and outputs, the next step is to actually solve the problem. This is where the concept of **taking baby steps** comes into play. The idea is to break down the problem into the smallest, most consumable pieces you can think of and then write the code that performs those transformations. It’s about constantly asking yourself: 
 
-Next, we define what the outputs of our problem space are. What needs to happen? We need to process a payment, ensure it goes through, and handle cases where it doesn’t. We also need to create an order and track its fulfillment.
+- Do I understand what needs to be done next?
+- Can this be broken down further?
+- Is there any domain knowledge missing that I need to understand before proceeding?
 
-Here’s how we might model this at a high level using domain modeling:
+By approaching a problem in this way, you ensure that you never get overwhelmed by complexity. Each step is simple, understandable, and can be implemented without too much cognitive overhead.
 
-```haskell
--- Define the output data structures
-data Order = Order { orderId :: Int, orderTotal :: Double, orderStatus :: String }
+#### Applying Baby Steps to the Payment Example
 
--- Example of a transformation function
-processOrder :: Cart -> PaymentMethod -> Either String Order
-processOrder cart paymentMethod = 
-  -- Assume processPayment returns Either String Order
-  case processPayment cart paymentMethod of
-    Right order -> Right order
-    Left errMsg -> Left errMsg
-```
+Let’s go back to our payment processing example. We’ve already identified the inputs (the cart of items and the payment method) and the outputs (a successful payment and an order). Now we need to figure out how to go from input to output, one small step at a time.
 
-This simple model allows us to start reasoning about our solution. We're not rushing to code; we're taking the time to ensure our understanding is correct.
+**Step 1: Calculate the Total Cost**
 
-### Stub Out the Transformation Functions
-Now that we have a clear model, we can create the transformation functions that will make our application work. Start with the type signatures. Why? Because type signatures are like the scaffolding of your solution—they define the shape and structure of what you’re building.
+The first transformation we need is to calculate the total cost of the items in the cart. This is a simple, isolated task that can be easily understood. Let’s break it down:
+
+- **Understand the task**: We need to sum up the price of each item in the cart, taking into account the quantity of each item.
+- **Missing knowledge**: None, this is straightforward.
+- **Write the function**: 
 
 ```haskell
--- Type signatures help us think about the problem
 calculateTotal :: Cart -> Double
-processPayment :: Cart -> PaymentMethod -> Either String Order
+calculateTotal (Cart items) = sum [itemPrice item * fromIntegral (itemQuantity item) | item <- items]
 ```
 
-With these type signatures, you can start reasoning about what each function needs to do. Notice how we're breaking everything down into small, manageable pieces.
+Here, the calculateTotal function is doing just one thing: summing up the total cost of all items in the cart. It’s a single, small step, but it’s essential to the overall solution.
+
+**Step 2: Process the Payment**
+
+Now that we have the total cost, the next step is to process the payment. This is a bit more complex, so let’s break it down further:
+
+- **Understand the task**: We need to use the total cost and the payment method to attempt a transaction.
+- **Missing knowledge**: How does the specific payment method work? Do we need to handle different payment methods differently?
+- **Write the function**:
+
+```haskell
+processPayment :: Double -> PaymentMethod -> Either String PaymentResult
+processPayment total (Stripe token) = processStripePayment total token
+processPayment total (PayPal account) = processPayPalPayment total account
+```
+
+In this step, we’ve broken down the task into the act of processing a payment using either Stripe or PayPal. Notice how we didn’t try to solve everything at once. Instead, we created a function that delegates the actual payment processing to other functions (processStripePayment and processPayPalPayment), which might look something like this:
+
+```haskell
+processStripePayment :: Double -> String -> Either String PaymentResult
+processStripePayment total token = -- logic to interact with Stripe's API
+
+processPayPalPayment :: Double -> String -> Either String PaymentResult
+processPayPalPayment total account = -- logic to interact with PayPal's API
+```
+
+**Step 3: Generate an Order**
+
+After processing the payment, we need to generate an order. Again, let’s break it down:
+
+**Understand the task**: We need to create an order record that includes details like the items purchased, the total cost, and the status of the payment.
+**Missing knowledge**: What information needs to be included in the order? How should we handle failed payments?
+**Write the function**:
+
+```haskell
+generateOrder :: Cart -> PaymentResult -> Order
+generateOrder cart paymentResult = Order {
+    orderItems = items cart,
+    orderTotal = calculateTotal cart,
+    orderStatus = if paymentSucceeded paymentResult then "Confirmed" else "Failed"
+}
+```
+
+Here, generateOrder takes the cart and the result of the payment process to create an order. Notice how the orderStatus depends on whether the payment succeeded or failed, which is determined by inspecting the PaymentResult.
+
+**The Thinking Process: Breaking Down a Problem into Steps**
+
+The key to successfully applying this “baby steps” approach is to always keep breaking the problem down until you reach a point where each step is small enough that you can confidently implement it. If you encounter something you don’t fully understand, that’s a signal to stop and dig deeper into that specific part of the problem before proceeding.
+
+For example, if you were unsure how to interact with Stripe’s API, you’d break that down further:
+
+- What API endpoints do you need to call?
+- What authentication does Stripe require?
+- What does a successful or failed transaction response look like?
+
+Each of these questions can lead to a smaller, more manageable task that you can then solve individually.
+
+In the end, the entire payment processing problem is solved by implementing a series of small, well-defined functions, each responsible for a specific aspect of the overall process. By focusing on one tiny piece at a time, you avoid getting overwhelmed and ensure that each part of your program is understandable, testable, and reliable.
+
+This is the essence of functional programming: breaking problems down into manageable, bite-sized pieces, writing pure functions to handle those pieces, and then composing them together to solve the larger problem. With this approach, you can tackle even the most complex programming challenges with confidence.
 
 ### Small Components, Big Impact
 When creating functions, it’s best to think about them in small, reusable components. The less they do, the more useful they are across different parts of your application. Haskell excels at allowing us to compose functions together in meaningful ways, and as you progress through this guide, you'll learn a bunch of neat ways to do this.
