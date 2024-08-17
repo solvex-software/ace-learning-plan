@@ -310,9 +310,9 @@ Before we dive deeper, let’s touch on something that often confuses newcomers:
 
 - **Semigroups**: These are like Monoids, but without the need for an identity element. They’re still about combining things, but in a slightly less restrictive way.
 
-Don’t worry if these concepts don’t fully click right away. We’ll be exploring them in more detail as we progress. For now, just remember that these are mathematical terms that help us reason about how to combine, apply, and manage contexts in our programs. And yes, the names are a nod of respect to the mathematicians who developed these ideas.
+Don’t worry if these concepts don’t fully click right away. We’ll be exploring them in more detail as we progress. For now, just remember that these are mathematical terms that help us reason about how to combine, apply, and manage contexts in our programs.
 
-Remember, Haskell is actually very simple at its core. Complexity arises from the many ways you can compose and modify functions, but if you understand the basics, you'll be able to build anything.
+The reason we still use these names is to show respect to the mathematicians who developed these ideas. In the FP world, everyone uses these terms and you will learn to use them as well!
 
 
 ## How to Build an Application: What is a Functional Application?
