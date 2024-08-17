@@ -21,6 +21,38 @@ Before we dive into Haskell, let’s talk about why FP is gaining so much tracti
 
 - **Generative Testing**: FP languages often emphasize generative testing, where the program itself generates test cases. This is in contrast to traditional unit testing in OO languages like C#, where developers manually write test cases. Haskell’s QuickCheck library, for example, allows you to describe properties that your functions should satisfy, and then automatically generates test cases to verify those properties. This approach can uncover edge cases that you might never think to test manually.
 
+## Why not go with the status quo, Object-Oriented Programming?
+
+While these languages are very popular, in practice they are a nightmare for large projects. Why? Imagine you have a huge bin of LEGOs. You decide to recruit 4 friends to helpyou with an ambitious project: building a robot! There are infinitely many ways to put together pieces of lego, as well as infinite ways this project can go right or wrong. While there are many outcomes we can definitely know the characteristics of a successful project vs an unsuccessful one.
+
+### Unsuccessful Characteristics
+1. The pieces may work properly on their own but not altogether
+2. Or there may be a faulty component
+3. Failures in connected components cause failures in other components
+4. One or many components fail when facing some obstacle, such as a bump in the floor, that the robot cannot handle successfully.
+
+### Successful Characteristics 
+
+1. For any set of inputs in an environment it is designed for, the robot as a whole can successfully maneuver 
+2. It can perform all the cool tricks you and the amigos designed it to do!
+3. And hopefully, you also enjoyed the project and watching it in action
+
+If you were to all take on a different component of the body independent of each other you would likely run into plenty of integration issues. For example, the legs may receive power in a different manner than the arms. There's also the balance and coordination of the robot: when it comes to a bump how does it know to position its arms given the movement of the legs. Are the legs and feet to scale to support the weight of the body? 
+
+So fast forward however many weeks it has taken you and your amigos and your new challenge is how to write an adapter, instead of connecting the arms to the torso you connect the arm to the adapter which is connected to the torso. But you still are up against the same original challenges like how do you make sure it balances and now you have much more weight to consider. At this point you and the amigos are mucho less happy as some of you think "Maybe we should just start fresh" and others think "I am not throwing away 4 weeks of work! I will make an adapter for the adapter if I have to". How did we get here? 
+
+You would have been successful if from the start you created pieces which were 100% perfect and did everything they need to and nothing more. 
+
+That might sound difficult but this is the essence of beautiful engineering, math and design. Addition is built on counting which allows us to define multiplication. Similarly if we started with systems that can be fully defined in terms of all inputs and outputs. Then we would know that this independent system would just be like another piece of lego that we can easily combine with other LEGOs and other well-built systems. 
+
+Ace is a platform which is built entirely using functional programming with the Haskell language. It's allowed for automatic database migration without fear, in-depth video processing through WebRTC, and over 150 unique features. We can easily add new features without worry of breaking old ones. Even when we need to change old features, we can do so easily because of the type awareness of the Haskell compiler. 
+
+Our team has also been in many projects written in object-oriented languages, which initially seemed quick with the use of libraries but then spent even longer working to adapt the library to some other component and spaghetti code that no one has been willing to touch for years. 
+
+The difference in the outcomes of these projects have in practice simply come down to the compiler. As we will see throughout the Ace program, it comes down to the Haskell compiler disallowing numerous problematic ways to code and also the thinking patterns that result from working with such a strongly typed compiler.
+
+After using Haskell, you will have a mental framework to discover the best solution to any given problem. You will also know the difference between strong and weak coding patterns and know whether or not you can trust a function. This mental framework is one that can be applied not only to amazing languages like Haskell and other functional strongly-typed languages but even to languages which don't stop you from writing bad code. 
+
 ## A Side-by-Side Comparison: C# (OOP) vs. Haskell (FP)
 
 Let’s look at some specific examples to see how these differences play out in practice.
