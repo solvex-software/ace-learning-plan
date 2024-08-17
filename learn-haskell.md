@@ -9,18 +9,6 @@ In recent years, there’s been a noticeable shift in the programming world. Mod
 
 This isn’t just a theoretical shift—it’s happening at the highest levels of industry. Microsoft, for example, has hired Simon Peyton Jones, one of the creators of Haskell, to help guide their functional programming efforts. Tim Sweeney, the founder of Epic Games, is working with Simon on a new language called Verse, which brings FP concepts into game development. Meanwhile, companies like Tesla, SpaceX, and Neuralink are using Haskell to solve some of the most complex and high-stakes problems in the world.
 
-## Why Does Functional Programming Matter?
-
-Before we dive into Haskell, let’s talk about why FP is gaining so much traction. The core principles of FP—immutability, pure functions, laziness, and generative testing—offer solutions to many of the challenges that OO programming struggles with.
-
-- **Immutability**: In FP, data is immutable by default. This means that once you create a value, it cannot be changed. Compare this to C#, where objects can often change state in unpredictable ways, leading to bugs that are hard to track down. In Haskell, because data doesn’t change, you can reason about your code more easily, leading to fewer bugs and more robust software.
-
-- **Pure Functions**: A pure function is one that, given the same inputs, always produces the same output and has no side effects. This is a cornerstone of FP and contrasts sharply with the OO approach, where methods often modify the state of objects or interact with global state. In C#, methods often have side effects, which can make programs harder to understand and maintain. In Haskell, the use of pure functions means that your code is more predictable and easier to test.
-
-- **Laziness**: Haskell is a lazy language, meaning that it doesn’t evaluate expressions until absolutely necessary. This can lead to performance improvements and allows for the creation of more abstract and reusable code. In contrast, C# is an eager language, evaluating expressions as soon as they are encountered, which can sometimes lead to inefficiencies.
-
-- **Generative Testing**: FP languages often emphasize generative testing, where the program itself generates test cases. This is in contrast to traditional unit testing in OO languages like C#, where developers manually write test cases. Haskell’s QuickCheck library, for example, allows you to describe properties that your functions should satisfy, and then automatically generates test cases to verify those properties. This approach can uncover edge cases that you might never think to test manually.
-
 ## Why not go with the status quo, Object-Oriented Programming?
 
 While these languages are very popular, in practice they are a nightmare for large projects. Why? Imagine you have a huge bin of LEGOs. You decide to recruit 4 friends to helpyou with an ambitious project: building a robot! There are infinitely many ways to put together pieces of lego, as well as infinite ways this project can go right or wrong. While there are many outcomes we can definitely know the characteristics of a successful project vs an unsuccessful one.
@@ -54,6 +42,18 @@ Our team has also been in many projects written in object-oriented languages, wh
 The difference in the outcomes these projects have in practice simply comes down to the compiler. As we will see throughout the Ace program, it comes down to the Haskell compiler disallowing numerous problematic ways to code, and the thinking patterns that result from working with such a strongly typed compiler.
 
 After using Haskell, you will have a mental framework to discover the best solution to any given problem. You will also know the difference between strong and weak coding patterns and know whether or not you can trust a function. This mental framework is one that can be applied not only to amazing languages like Haskell and other functional strongly-typed languages but even to languages which don't stop you from writing bad code. 
+
+## Why Does Functional Programming Matter?
+
+Before we dive into Haskell, let’s talk about why FP is gaining so much traction. The core principles of FP—immutability, pure functions, laziness, and generative testing—offer solutions to many of the challenges that OO programming struggles with.
+
+- **Immutability**: In FP, data is immutable by default. This means that once you create a value, it cannot be changed. Compare this to C#, where objects can often change state in unpredictable ways, leading to bugs that are hard to track down. In Haskell, because data doesn’t change, you can reason about your code more easily, leading to fewer bugs and more robust software.
+
+- **Pure Functions**: A pure function is one that, given the same inputs, always produces the same output and has no side effects. This is a cornerstone of FP and contrasts sharply with the OO approach, where methods often modify the state of objects or interact with global state. In C#, methods often have side effects, which can make programs harder to understand and maintain. In Haskell, the use of pure functions means that your code is more predictable and easier to test.
+
+- **Laziness**: Haskell is a lazy language, meaning that it doesn’t evaluate expressions until absolutely necessary. This can lead to performance improvements and allows for the creation of more abstract and reusable code. In contrast, C# is an eager language, evaluating expressions as soon as they are encountered, which can sometimes lead to inefficiencies.
+
+- **Generative Testing**: FP languages often emphasize generative testing, where the program itself generates test cases. This is in contrast to traditional unit testing in OO languages like C#, where developers manually write test cases. Haskell’s QuickCheck library, for example, allows you to describe properties that your functions should satisfy, and then automatically generates test cases to verify those properties. This approach can uncover edge cases that you might never think to test manually.
 
 ## A Side-by-Side Comparison: C# (OOP) vs. Haskell (FP)
 
