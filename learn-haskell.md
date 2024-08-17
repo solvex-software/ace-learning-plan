@@ -298,7 +298,7 @@ You might be thinking, "This all sounds great, but how does it help me build a r
 
 Take the time to understand the function signatures of unfamiliar functions. They’re your roadmap, guiding you through the complex landscape of Haskell. Approach each function one property at a time, and before you know it, you'll be solving problems with elegance and ease.
 
-### Intro: Type Theory and its Motivations for Programming
+### Demystifying Type Theory and its Motivations for Functional Programming
 
 Before we dive deeper, let’s touch on something that often confuses newcomers: terms like Monoids, Functors, Monads, and Semigroups. These might sound intimidating, but they’re just mathematical concepts that we use to structure our programs in a more reliable and predictable way.
 
