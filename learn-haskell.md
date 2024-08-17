@@ -190,7 +190,6 @@ processPayment cart paymentMethod =
        PayPal account -> -- Process PayPal payment here
 ```
 
-
 ### Taking Baby Steps
 
 Once we've modeled the problem space by identifying the inputs and outputs, the next step is to actually solve the problem. This is where the concept of **taking baby steps** comes into play. The idea is to break down the problem into the smallest, most consumable pieces you can think of and then write the code that performs those transformations. It’s about constantly asking yourself: 
@@ -248,9 +247,9 @@ processPayPalPayment total account = -- logic to interact with PayPal's API
 
 After processing the payment, we need to generate an order. Again, let’s break it down:
 
-**Understand the task**: We need to create an order record that includes details like the items purchased, the total cost, and the status of the payment.
-**Missing knowledge**: What information needs to be included in the order? How should we handle failed payments?
-**Write the function**:
+- **Understand the task**: We need to create an order record that includes details like the items purchased, the total cost, and the status of the payment.
+- **Missing knowledge**: What information needs to be included in the order? How should we handle failed payments?
+- **Write the function**:
 
 ```haskell
 generateOrder :: Cart -> PaymentResult -> Order
@@ -282,8 +281,6 @@ This is the essence of functional programming: breaking problems down into manag
 ### Small Components, Big Impact
 When creating functions, it’s best to think about them in small, reusable components. The less they do, the more useful they are across different parts of your application. Haskell excels at allowing us to compose functions together in meaningful ways, and as you progress through this guide, you'll learn a bunch of neat ways to do this.
 
-Remember, Haskell is actually very simple at its core. Complexity arises from the many ways you can compose and modify functions, but if you understand the basics, you'll be able to build anything.
-
 ```haskell
 -- Compose small functions to achieve bigger tasks
 applyDiscount :: Double -> Double -> Double
@@ -292,6 +289,8 @@ applyDiscount discount total = total * (1 - discount)
 totalWithDiscount :: Double -> Cart -> Double
 totalWithDiscount discount = applyDiscount discount . calculateTotal
 ```
+
+Remember, Haskell is actually very simple at its core. Complexity arises from the many ways you can compose and modify functions, but if you understand the basics, you'll be able to build anything.
 
 ### Functional Programming Mindset
 
