@@ -606,10 +606,57 @@ Why Types Matter
 b) simple types and type signatures
 
 How to Read Type Signatures
+- A type signature describes the types of the inputs a function takes and the type of output it produces.
+- a typical type signature looks like this
+- ``haskell
+functionName :: InputType1 -> InputType2 -> OutputType
+- can be as conplex as this: <gpt: (show a complex obelisk/reflex type for cross platform mobile)>
+- they are really all doing the same. specifying the flow of the types through the function. REMEMBER partial application, as it can be a gotcha for newbies when reading more complex type signatures, and if used well can be used to sinplify complex type signatures. for now we will stick with relatively simple types.
+- Break down the type signature into the inputs (everything before the last ->) and the output (the type after the last ->).
+- Understand that Haskell functions are curried, meaning every function actually takes one argument and returns another function if more arguments are needed.
+- <show example of currying in explocit detail, and how the compiler hides it from us>
+- quick note on forall
 
 Primitive Types
+Primitive types in Haskell are the basic building blocks for more complex types. They represent simple values like numbers, characters, and booleans.
+
+Common Primitive Types
+
+	•	Int: Represents a fixed-size integer. Example: 42.
+	•	Integer: Represents an arbitrary-precision integer. Example: 12345678901234567890.
+	•	Float: Represents a single-precision floating-point number. Example: 3.14.
+	•	Double: Represents a double-precision floating-point number. Example: 2.71828.
+	•	Char: Represents a single character. Example: 'a'.
+	•	Bool: Represents a boolean value (True or False). Example: True.
+	•	String: Represents a sequence of characters (a list of Char). Example: "Hello, world!".
+
+Examples:
+
+```haskell
+-- Integer
+age :: Int
+age = 30
+
+-- Floating-point number
+piValue :: Double
+piValue = 3.14159
+
+-- Boolean
+isSunny :: Bool
+isSunny = True
+
+-- Character
+initial :: Char
+initial = 'H'
+
+-- String
+greeting :: String
+greeting = "Hello, Haskell!"
+```
 
 Polymorphic Types
+- polymorphism
+- type class constraints
 
 Algebraic Data Types (ADTs)
 
