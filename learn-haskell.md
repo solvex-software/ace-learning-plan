@@ -431,6 +431,7 @@ Different types of applications have different requirements for safety. FP is ha
 
 **Lesson 1 - Types & Domain Theory**
 
+a) introduction to types
 What are types?
 
 - Types are a way to categorize data. The closer the types model the real world, the easier your application becomes to reason about, and the more robust it becomes
@@ -439,11 +440,79 @@ What are types?
 - They are used in functions to ensure that functions receive and return the correct kinds of data
 - In functional programming every input must have a valid output within the context it’s being called, and so we can’t just mutate state directly as functions always return a value rather than mutate them. This means that the internal workings of the functions must also be correct
 
+<gpt: generate examples of String, Integer, Boolean, and how they are used in Haskell for safety>
+
 How are Types in FP different?
 in haskell types are first class citizens, treated as values in the compiler, allowing you to encode complex logic directly into your types, leading to predictable and safe code.
 in other popular languages, the imlementation for this will vary and is often either not possible or not practical due to either extensive boilerplate or an inability to predict state im deep areas of execution due to poor state management restrictions.
 
 tons of features that make them better to work with, faster to write, etc. but really the magic comes in the way the hindley-milner type system handles currying to ensure that execution (even partially applied) works at every step because every cardinality has been defined and is mathematically sound.
+
+<gpt: reference points from discussion on types in c# vs haskell>
+
+Why Types Matter
+- having strict and well thought-out types is crucial to robust system dsign. it can become very easy for code to become unreadable and have unknown side-effects and faults at runtime. this risk increases exponentially with every additional developer that touches the codebase.
+- being able to read and understand everything something does by simply looking at a type signature is amazing for clarity of design requirements, allowing us to change our code quickly to adapt to the dynamic business environment.
+- in functional programming you can often reason about what code does before you even look at the details of it, just based on the types. You can search for functions on Hoogle (yes, Hoogle) that match the type signature you're looking for, and with partial appplication it becomes trivial to integrate the correct function you are looking for. this makes it bery easy to reason about code changes and to do so safely, as the compiler won't let us bind a function that doesnt fit its type constraints.
+<gpt: generate examples of compiler failures that would be typical gotchas in procedural programming. show the code, and i will run it to show the compiler error, unless you're able to do that for me>
+
+b) simple types and type signatures
+
+How to Read Type Signatures
+
+Primitive Types
+
+Polymorphic Types
+
+Algebraic Data Types (ADTs)
+
+
+c) domain driven design
+
+What is Domain Driven Design?
+- methodology for structuring software around a business domain
+- model real world concepts in code, avoiding all use of primitives except at the leaf level.
+- use the language that the client uses, not some made up tertiary language in our code. often times clients are actually able to assist in the design of our domain IN CODE because its so readable to them. it just looks like plain english when you've done it correctly.
+- <gpt: example of domain driven design implemented very well for the home robot example.>
+
+Modelling the Domain with Types
+- <gpt: generate an example where the arm rotations and actuators developed by one team need to match the specs of the Torso seveloped by the other team, with the Shoulder as the integration point. create a hypothetical scenario for this, and provide a quick background summary>
+
+Defining Domain Concepts as Types
+- the type system in Haskell is very powerful. it can be used to define more than just basic types. we can model complex concepts into the type system themselves.
+- say we had a realtime waterfall feed from 3 different space agencies, all with slightly different formatting, existence of variables, etc. some need to be aggregated in different manners than others, but at the end of the day we need to provide a realtime feed with accurate data based on one of these three. there will be a round-robin to see which value is most accurate using validation and then that balhe will be served. this is to handle redundancy and delays in updates from our vendors.
+- <gpt: generate a highly complex and fully implemented domain model for this in Haskell, using type classes, type families, sum types, and whatever else you see fit for this example.>
+
+d) Pairing Domain Theory with Type Theory
+
+Type Theory in the Context of Domain Modelling
+
+Ensuring Valid States with Types
+
+How the Compiler Infers Types 
+
+
+e) Advanced Type Concepts
+- dont need to learn these now but you can if you want, and its good to know at least how to identify syntax that you don't know to help learn it, as sometimes seeing it in a certain context will make it "click".
+
+Type Classes and Overloading
+
+Type Families
+
+Phantom Types for Extra Type Safety
+
+Type-Level Programming
+
+
+f) Recap & Exercises
+
+Recap
+
+Exercise 1
+
+Exercise 2
+
+Exercise 3
 
 
 **Lesson 2 - Immutability Changes Everything**
