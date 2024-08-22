@@ -386,6 +386,153 @@ Remember, this is just the beginning. As we continue, you’ll learn more about 
 
 
 
+# Lesson 1: Types and Domain Theory
+
+# Lesson 1 - Types & Domain Theory
+
+## Introduction to Types
+
+### What Are Types?
+
+Types are fundamental to understanding and writing robust code in Haskell. They are not just a way to categorize data but are crucial to how we model the real world within our applications. The closer our types mirror the real world, the easier our applications become to reason about, and the more robust they become. Let’s dive deeper into what types really are:
+
+- **Types as Categorization**: Types categorize data into labelled sets with one or more variations. For instance, a `Bool` type categorizes data as either `True` or `False`, while a `String` type categorizes sequences of characters.
+  
+- **Types Represent Information**: They represent the kinds of information our application processes. For example, an `Integer` type represents whole numbers, which might be used to count items or represent IDs.
+
+- **Types in Functions**: In Haskell, types are used in functions to ensure that functions receive and return the correct kinds of data. This is crucial because it allows us to predict and enforce the behavior of our functions. Unlike in some other languages, Haskell functions always return a value and cannot mutate state directly. This means that the internal workings of functions must also be correct, as the types will enforce valid input and output.
+
+### Core Type Declarations in Haskell
+
+Before we delve into function examples, let's explore the basic building blocks of Haskell types: data declarations, type declarations, and newtype declarations.
+
+#### 1. **Data Declarations**
+   - **Purpose**: A `data` declaration is used to define a new algebraic data type. This is the most common way to define new types in Haskell.
+   - **Syntax**: 
+
+     ```haskell
+     data Color = Red | Green | Blue
+     ```
+
+     Here, `Color` is a new type with three possible values: `Red`, `Green`, and `Blue`. These values are called constructors. The `data` keyword allows us to define a type that can have multiple forms.
+
+#### 2. **Type Declarations**
+   - **Purpose**: A `type` declaration creates a type synonym, which is essentially an alias for an existing type. It doesn't create a new type but makes the code more readable.
+   - **Syntax**:
+
+     ```haskell
+     type Name = String
+     ```
+
+     In this example, `Name` is a type synonym for `String`. Everywhere you see `Name` in the code, it is just a `String` underneath, but using `Name` can make your code more descriptive.
+
+#### 3. **Newtype Declarations**
+   - **Purpose**: The `newtype` declaration creates a new type that is distinct from its underlying type but has the same runtime representation. It’s often used for type safety without runtime overhead.
+   - **Syntax**:
+
+     ```haskell
+     newtype CustomerId = CustomerId Int
+     ```
+
+     Here, `CustomerId` is a new type that wraps an `Int`. While it’s just an `Int` at runtime, the type system treats `CustomerId` and `Int` as distinct, preventing you from accidentally mixing them up.
+
+#### 4. **Function Definitions**
+   - **Purpose**: Functions in Haskell are first-class citizens, meaning they can be passed as arguments, returned from other functions, and assigned to variables. Functions also have types, and these types are crucial in ensuring that functions interact with data correctly.
+   - **Syntax**:
+
+     ```haskell
+     greet :: Name -> String
+     greet name = "Hello, " ++ name ++ "!"
+     ```
+
+     In this example, `greet` is a function that takes a `Name` (which is a synonym for `String`) and returns a `String`. The type signature `Name -> String` ensures that `greet` only accepts a `Name` as input and will always produce a `String` as output.
+
+### How Are Types in FP Different?
+
+In Haskell, types are first-class citizens. This means that they are treated as values by the compiler, allowing you to encode complex logic directly into your types. This capability leads to predictable and safe code because the types themselves enforce the rules of your application.
+
+**Comparison with Other Languages:**
+- In languages like C#, types are often tied to classes and objects, and while types are important, they don’t offer the same level of expressiveness and safety. In C#, it’s possible to misuse types, especially when dealing with inheritance and mutable state, leading to unpredictable behavior deep in the execution of a program.
+- Haskell’s type system, based on the Hindley-Milner type system, is much more powerful. It supports features like type inference, algebraic data types (ADTs), and pattern matching, all of which allow you to write concise yet expressive code without sacrificing safety.
+
+### Why Types Matter
+
+Having strict and well-thought-out types is crucial to robust system design. Let’s break down why:
+
+- **Clarity and Predictability**: Types provide a clear contract for what a function does. When you look at a Haskell type signature, you can often understand what the function does without even seeing the implementation. This clarity is invaluable, especially in large codebases where multiple developers are working together. It reduces the likelihood of bugs and makes the system easier to maintain.
+  
+- **Avoiding Runtime Errors**: In dynamically-typed or loosely-typed languages, many errors only appear at runtime, leading to potential crashes or unpredictable behavior. Haskell’s strong type system catches these errors at compile time, significantly reducing the risk of runtime failures.
+  
+- **Reasoning About Code**: In Haskell, you can often reason about what a piece of code does just by looking at its type signature. This allows you to find and apply functions that match the type signature you need, often without needing to write new code. Hoogle, a Haskell-specific search engine, lets you search for functions by their type signatures, making it incredibly easy to integrate the right function into your program.
+
+### Example: Compiler Failures in Procedural Programming
+
+Let’s explore some examples where Haskell’s type system helps prevent runtime errors that are common in procedural languages like C.
+
+#### Procedural Example in C:
+
+```c
+#include <stdio.h>
+
+int divide(int a, int b) {
+    return a / b;
+}
+
+int main() {
+    int result = divide(10, 0);
+    printf("Result: %d\n", result);
+    return 0;
+}
+```
+
+
+Expected Error:
+
+	•	When you run this C code, dividing by zero will lead to undefined behavior, which can cause a crash or other unexpected results.
+
+Typical Error Output:
+
+	•	Depending on the system, you might see an error like “Floating point exception: division by zero” or the program might just crash without a clear error message.
+
+Safe Haskell Equivalent:
+
+```haskell
+divide :: Integer -> Integer -> Maybe Integer
+divide _ 0 = Nothing
+divide a b = Just (a `div` b)
+
+main :: IO ()
+main = case divide 10 0 of
+    Nothing -> putStrLn "Cannot divide by zero!"
+    Just result -> putStrLn ("Result: " ++ show result)
+```
+
+Expected Result:
+
+	•	This Haskell code safely handles the division by zero case, preventing a runtime error. Instead of crashing, it prints a friendly message: “Cannot divide by zero!”
+
+Explanation:
+
+	•	The use of Maybe in the type signature indicates that the result of divide might be Nothing (indicating an invalid operation) or Just a value (indicating a valid division). This forces the programmer to handle both cases explicitly, preventing runtime surprises.
+
+The Magic of the Hindley-Milner Type System
+
+One of the things that makes Haskell’s type system so powerful is the Hindley-Milner type system, which supports type inference and currying:
+
+	•	Type Inference: The compiler can often deduce the types of expressions without explicit annotations. This reduces boilerplate and lets you write concise code while still enjoying the safety of static typing.
+	•	Currying: In Haskell, every function is curried by default, meaning that functions with multiple arguments are treated as a series of functions that each take a single argument. This allows for partial application, where a function is applied to some of its arguments, returning another function that takes the remaining arguments. The Hindley-Milner type system ensures that even partially applied functions are type-safe at every step.
+
+Example of Currying in Haskell:
+
+```haskell
+add :: Integer -> Integer -> Integer
+add x y = x + y
+
+increment :: Integer -> Integer
+increment = add 1
+```
+
+Here, add is a curried function that takes two Integer arguments. By partially applying add with the value 1, we create a new function increment that only takes a single argument and adds 1 to it. The type system ensures that this transformation is valid and safe.
 
 
 
