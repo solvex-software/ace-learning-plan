@@ -431,6 +431,20 @@ Different types of applications have different requirements for safety. FP is ha
 
 **Lesson 1 - Types & Domain Theory**
 
+What are types?
+
+- Types are a way to categorize data. The closer the types model the real world, the easier your application becomes to reason about, and the more robust it becomes
+- They are labelled sets of data with one or more variations
+- They represent the information our application is processing
+- They are used in functions to ensure that functions receive and return the correct kinds of data
+- In functional programming every input must have a valid output within the context it’s being called, and so we can’t just mutate state directly as functions always return a value rather than mutate them. This means that the internal workings of the functions must also be correct
+
+How are Types in FP different?
+in haskell types are first class citizens, treated as values in the compiler, allowing you to encode complex logic directly into your types, leading to predictable and safe code.
+in other popular languages, the imlementation for this will vary and is often either not possible or not practical due to either extensive boilerplate or an inability to predict state im deep areas of execution due to poor state management restrictions.
+
+tons of features that make them better to work with, faster to write, etc. but really the magic comes in the way the hindley-milner type system handles currying to ensure that execution (even partially applied) works at every step because every cardinality has been defined and is mathematically sound.
+
 
 **Lesson 2 - Immutability Changes Everything**
 
