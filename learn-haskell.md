@@ -335,7 +335,9 @@ getCurrentTimeAndAdd x = do
     return (x + round currentTime)
 ```
 
-Notice how the pure function add will always give the same result for the same inputs, while getCurrentTimeAndAdd depends on an external factor, making it impure. This predictability is what makes functional programming so powerful.
+Notice how the pure function add will always give the same result for the same inputs, while getCurrentTimeAndAdd depends on an external factor, making it impure. 
+
+In Haskell, we must explicitly define impure functions by using the IO Monad. This is part of what makes functional programming so powerful.
 
 ### The Identity of a Functional Program
 Here’s a fun thought experiment: imagine your entire application as one massive mathematical equation, filling a chalkboard. When it’s done, it compiles down to a single function. That function, given the same input, will always produce the same output. That’s the identity of a functional program—it’s self-contained and predictable.
