@@ -488,11 +488,11 @@ int main() {
 
 Expected Error:
 
-	•	When you run this C code, dividing by zero will lead to undefined behavior, which can cause a crash or other unexpected results.
+- When you run this C code, dividing by zero will lead to undefined behavior, which can cause a crash or other unexpected results.
 
 Typical Error Output:
 
-	•	Depending on the system, you might see an error like “Floating point exception: division by zero” or the program might just crash without a clear error message.
+- Depending on the system, you might see an error like “Floating point exception: division by zero” or the program might just crash without a clear error message.
 
 Safe Haskell Equivalent:
 
@@ -509,20 +509,20 @@ main = case divide 10 0 of
 
 Expected Result:
 
-	•	This Haskell code safely handles the division by zero case, preventing a runtime error. Instead of crashing, it prints a friendly message: “Cannot divide by zero!”
+- This Haskell code safely handles the division by zero case, preventing a runtime error. Instead of crashing, it prints a friendly message: “Cannot divide by zero!”
 
 Explanation:
 
-	•	The use of Maybe in the type signature indicates that the result of divide might be Nothing (indicating an invalid operation) or Just a value (indicating a valid division). This forces the programmer to handle both cases explicitly, preventing runtime surprises.
+- The use of Maybe in the type signature indicates that the result of divide might be Nothing (indicating an invalid operation) or Just a value (indicating a valid division). This forces the programmer to handle both cases explicitly, preventing runtime surprises.
 
-The Magic of the Hindley-Milner Type System
+#### The Magic of the Hindley-Milner Type System
 
 One of the things that makes Haskell’s type system so powerful is the Hindley-Milner type system, which supports type inference and currying:
 
-	•	Type Inference: The compiler can often deduce the types of expressions without explicit annotations. This reduces boilerplate and lets you write concise code while still enjoying the safety of static typing.
-	•	Currying: In Haskell, every function is curried by default, meaning that functions with multiple arguments are treated as a series of functions that each take a single argument. This allows for partial application, where a function is applied to some of its arguments, returning another function that takes the remaining arguments. The Hindley-Milner type system ensures that even partially applied functions are type-safe at every step.
+- Type Inference: The compiler can often deduce the types of expressions without explicit annotations. This reduces boilerplate and lets you write concise code while still enjoying the safety of static typing.
+- Currying: In Haskell, every function is curried by default, meaning that functions with multiple arguments are treated as a series of functions that each take a single argument. This allows for partial application, where a function is applied to some of its arguments, returning another function that takes the remaining arguments. The Hindley-Milner type system ensures that even partially applied functions are type-safe at every step.
 
-Example of Currying in Haskell:
+#### Example of Currying in Haskell:
 
 ```haskell
 add :: Integer -> Integer -> Integer
@@ -533,6 +533,190 @@ increment = add 1
 ```
 
 Here, add is a curried function that takes two Integer arguments. By partially applying add with the value 1, we create a new function increment that only takes a single argument and adds 1 to it. The type system ensures that this transformation is valid and safe.
+
+## Simple Types and Type Signatures
+
+### How to Read Type Signatures
+
+Type signatures are an essential part of Haskell programming. They describe the types of the inputs a function takes and the type of output it produces. Understanding how to read and interpret these signatures is critical to writing and maintaining robust Haskell code.
+
+- **Basic Type Signature**: A typical type signature in Haskell looks like this:
+
+  ```haskell
+  functionName :: InputType1 -> InputType2 -> OutputType
+  ```
+
+This means that the function functionName takes two inputs: one of type InputType1 and one of type InputType2, and it returns an output of type OutputType.
+
+Example:
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+```
+
+In this example, add takes two integers (Int -> Int) and returns another integer (Int).
+
+- **Complex Type Signatures**: Type signatures can get more complex, especially in larger Haskell libraries like Obelisk or Reflex, where cross-platform mobile development is involved.
+
+Example:
+
+```haskell
+widgetHold :: forall t m a. (MonadHold t m, PostBuild t m) => m a -> Event t (m a) -> m (Dynamic t a)
+```
+
+Let’s break this down:
+- `forall t m a.`: This means the function is polymorphic over types t, m, and a.
+- `(MonadHold t m, PostBuild t m) =>`: These are type class constraints, meaning m must be an instance of MonadHold and PostBuild.
+- `m a -> Event t (m a) -> m (Dynamic t a)`: This is the core function signature. It takes an m a, an Event t (m a), and returns an m (Dynamic t a).
+Even though this looks complicated, it’s fundamentally still the same concept of specifying the flow of types through the function.
+
+- **Partial Application and Currying**: Haskell functions are curried by default. This means every function actually takes one argument and returns another function if more arguments are needed. It’s important to remember that partial application allows you to call a function with fewer arguments than it expects, returning a new function that waits for the remaining arguments.
+
+Currying Example:
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+
+increment :: Int -> Int
+increment = add 1
+```
+
+In this example, add takes two integers, but by partially applying it with the argument 1, we create a new function increment that takes only one integer and adds 1 to it.
+
+Haskell hides this complexity, but understanding currying is crucial when reading type signatures with multiple -> symbols. You can think of Int -> Int -> Int as Int -> (Int -> Int)—a function that returns another function.
+
+Explicit Currying Example:
+```haskell
+addCurried :: Int -> Int -> Int
+addCurried = \x -> \y -> x + y
+```
+
+This is equivalent to the earlier add function, but here you can explicitly see how addCurried takes one argument (x), and returns a function that takes the next argument (y), and then produces the sum of x and y.
+
+- A Quick Note on forall: You might come across forall in complex type signatures like the one shown above. forall introduces type variables that can be replaced with any type. It’s often used in polymorphic functions where the types aren’t known in advance. By default, Haskell assumes forall is present in type signatures without it being explicitly written, so you don’t need to worry about it in most cases.
+
+#### Primitive Types
+
+Primitive types in Haskell are the basic building blocks for more complex types. They represent simple values like numbers, characters, booleans, etc. These types are fundamental to every Haskell program and allow you to represent data in the most basic forms.
+
+#### Common Primitive Types
+
+	•	Int: Represents a fixed-size integer. It’s faster but limited in range. Example: 42.
+	•	Integer: Represents an arbitrary-precision integer, meaning it can handle very large numbers. Example: 12345678901234567890.
+	•	Float: Represents a single-precision floating-point number. Example: 3.14.
+	•	Double: Represents a double-precision floating-point number, which is more precise than Float. Example: 2.71828.
+	•	Char: Represents a single character. Example: 'a'.
+	•	Bool: Represents a boolean value, which can be either True or False. Example: True.
+	•	String: Represents a sequence of characters (which is actually a list of Char values). Example: "Hello, world!".
+
+#### Primitive Type Examples
+
+```haskell
+-- Integer
+age :: Int
+age = 30
+
+-- Floating-point number
+piValue :: Double
+piValue = 3.14159
+
+-- Boolean
+isSunny :: Bool
+isSunny = True
+
+-- Character
+initial :: Char
+initial = 'H'
+
+-- String
+greeting :: String
+greeting = "Hello, Haskell!"
+```
+
+These types are the building blocks for more complex data structures that you’ll define using algebraic data types (ADTs), which we’ll cover shortly.
+
+#### Polymorphic Types
+
+Polymorphic types allow functions to be more flexible by operating on any type. Polymorphic functions are functions that work with type variables, rather than specific types.
+
+**Example of Polymorphic Types:**
+
+```haskell
+identity :: a -> a
+identity x = x
+```
+
+In this example, identity is a polymorphic function. The type variable a can be replaced with any type. This function takes an input of type a and returns a value of the same type.
+
+#### Type Class Constraints
+
+You can restrict polymorphic types using type class constraints. This allows the polymorphic function to work only with types that implement a particular type class.
+
+**Example with Type Class Constraints:**
+
+```haskell
+addValues :: Num a => a -> a -> a
+addValues x y = x + y
+```
+
+Here, `Num a =>` is a type class constraint that restricts a to types that are instances of the Num type class (such as Int, Float, etc.). This ensures that addValues can only be used with numeric types.
+
+### Algebraic Data Types (ADTs)
+
+Algebraic Data Types (ADTs) allow you to define custom types by combining other types. ADTs are foundational to Haskell and functional programming, allowing you to model complex data structures in a way that’s easy to reason about.
+
+#### Sum Types and Product Types
+
+- **Sum Types**: Represent a choice between multiple alternatives. A value of a sum type can take one of several forms.
+
+Example of a Sum Type:
+
+```haskell
+data Color = Red | Green | Blue
+```
+
+Here, Color is a sum type because a value of type Color can be either Red, Green, or Blue.
+
+- **Product Types**: Combine multiple types into a single type. A value of a product type contains values for each of the constituent types.
+
+Example of a Product Type:
+
+```haskell
+data Point = Point Int Int
+```
+
+Here, Point is a product type that contains two Int values representing the x and y coordinates of a point.
+
+#### Defining and Using ADTs
+
+You can use ADTs to model complex real-world data in your application.
+
+Example:
+
+```haskell
+data Shape = Circle Float
+           | Rectangle Float Float
+           | Square Float
+```
+
+- Shape is an ADT that can be a Circle with a radius (Float), a Rectangle with a width and height (Float Float), or a Square with a side length (Float).
+
+#### Pattern Matching with ADTs
+
+Pattern matching allows you to deconstruct ADT values and apply different logic depending on the constructor used.
+
+Example of Pattern Matching with ADTs:
+
+```haskell
+area :: Shape -> Float
+area (Circle r) = pi * r * r
+area (Rectangle w h) = w * h
+area (Square s) = s * s
+```
+
+In this example, the area function computes the area of a Shape. It uses pattern matching to determine whether the shape is a Circle, Rectangle, or Square, and calculates the area accordingly.
 
 
 
