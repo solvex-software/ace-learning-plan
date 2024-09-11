@@ -899,6 +899,8 @@ Exercise 3
 
 Currying, pure evaluation forced, benefits of this
 
+if you think wbout it, mutability doesnt a actually exist in the real world. x += 5 holds no realworld meaning.
+
 - metaphor of state immutability with the bucket ***
 
 **Lesson 3 - It's all Patterns**
@@ -918,7 +920,7 @@ Talk a bit about monads here, and link to more comprehensive document
 **Lesson 6 - Combine your Functions**
 Common combinators
 
-
+**Lesson 7 - Recursion**
 **Lesson 7 - Building Something Real**
 
 Components of a common web/mobile app
