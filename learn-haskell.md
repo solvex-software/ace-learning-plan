@@ -605,13 +605,13 @@ Primitive types in Haskell are the basic building blocks for more complex types.
 
 #### Common Primitive Types
 
-	•	Int: Represents a fixed-size integer. It’s faster but limited in range. Example: 42.
-	•	Integer: Represents an arbitrary-precision integer, meaning it can handle very large numbers. Example: 12345678901234567890.
-	•	Float: Represents a single-precision floating-point number. Example: 3.14.
-	•	Double: Represents a double-precision floating-point number, which is more precise than Float. Example: 2.71828.
-	•	Char: Represents a single character. Example: 'a'.
-	•	Bool: Represents a boolean value, which can be either True or False. Example: True.
-	•	String: Represents a sequence of characters (which is actually a list of Char values). Example: "Hello, world!".
+- Int: Represents a fixed-size integer. It’s faster but limited in range. Example: 42.
+- Integer: Represents an arbitrary-precision integer, meaning it can handle very large numbers. Example: 12345678901234567890.
+- Float: Represents a single-precision floating-point number. Example: 3.14.
+- Double: Represents a double-precision floating-point number, which is more precise than Float. Example: 2.71828.
+- Char: Represents a single character. Example: 'a'.
+- Bool: Represents a boolean value, which can be either True or False. Example: True.
+- String: Represents a sequence of characters (which is actually a list of Char values). Example: "Hello, world!".
 
 #### Primitive Type Examples
 
@@ -720,7 +720,7 @@ area (Square s) = s * s
 
 In this example, the area function computes the area of a Shape. It uses pattern matching to determine whether the shape is a Circle, Rectangle, or Square, and calculates the area accordingly.
 
-## c) Domain-Driven Design
+## Domain-Driven Design
 
 ### What is Domain-Driven Design?
 
@@ -756,7 +756,7 @@ pickUp arm gripper object = -- perform task
 
 Now the function pickUp uses domain-specific types (RobotArm, Gripper, Object, TaskResult), making it easier for your client to understand and ensuring that your code accurately models the real-world system. The types tell you a lot more about what’s going on, reducing ambiguity and making your system safer and easier to reason about.
 
-Modelling the Domain with Types
+#### Modelling the Domain with Types
 
 Let’s look at a more complex example to illustrate how types can model real-world interactions between different parts of a system.
 
@@ -800,7 +800,7 @@ In this example:
 
 This domain model allows us to precisely describe the real-world system, ensuring that the interaction between the arm and torso is modeled correctly. By using meaningful types, we avoid the pitfalls of using primitives like Int and Float, which don’t convey the intent or constraints of the system.
 
-### Defining Domain Concepts as Types
+#### Defining Domain Concepts as Types
 
 Haskell’s type system is incredibly powerful and can be used to model much more than just basic data structures. You can define complex concepts using types, allowing you to encode domain-specific logic directly into the type system.
 
