@@ -1121,7 +1121,7 @@ Here, Show a => is a type class constraint. It means that printValue can accept 
 
 Type families are a more advanced feature that allows you to associate types with type classes, effectively creating a form of type-level functions. They enable more flexibility and power in type classes, allowing for more dynamic behavior based on types.
 
-Example: Type Families for Different Container Types
+#### Example: Type Families for Different Container Types
 
 Let’s say we want to define a type class for container-like data structures (e.g., List, Maybe, etc.), but we want to allow different types of elements in these containers. Type families can help us here.
 
@@ -1230,16 +1230,103 @@ In this example:
 - The addQuantities function ensures that we can only add quantities of the same unit.
 - If we try to add a distance to a time, Haskell’s type system will catch this error at compile time.
 
+## Recap & Exercises
 
-f) Recap & Exercises
+### Recap
 
-Recap
+In this lesson, we’ve explored the foundational concepts of types and domain theory in Haskell. By understanding how types work in Haskell and how to apply domain-driven design, you’re now equipped with the tools to model real-world domains accurately and safely. Let’s review the key takeaways from this lesson:
 
-Exercise 1
+- **Simple Types and Type Signatures**:
+    - Type signatures describe the inputs and outputs of functions, providing a clear contract for what a function does.
+    - Primitive types like `Int`, `Float`, `Bool`, and `String` are the basic building blocks for more complex data structures.
+    - Haskell’s type system is based on currying, meaning that every function takes one argument and returns a new function if more arguments are required.
+    - Polymorphic types allow functions to work with any type, providing flexibility and reuse.
 
-Exercise 2
+- **Domain-Driven Design**:
+    - Domain-driven design (DDD) is a methodology for structuring software around real-world business domains, using types to model the domain in code.
+    - Avoid using primitive types like `Int` or `String` for domain concepts. Instead, define domain-specific types like `CustomerId`, `OrderId`, or `ProductName` to make your code more meaningful and safe.
+    - Use the language of the business domain when modeling in code, ensuring that the types and structures reflect real-world concepts accurately.
 
-Exercise 3
+- **Pairing Domain Theory with Type Theory**:
+    - Haskell’s type system allows you to enforce valid states in your domain model by encoding business rules directly into the type system.
+    - Type safety prevents invalid states, such as negative quantities or empty product names, from existing in your system, reducing runtime errors.
+    - The Haskell compiler works with you to infer types, but explicit type annotations provide clarity and enforce constraints.
+
+- **Advanced Type Concepts**:
+    - **Type Classes**: Haskell’s type classes allow for ad hoc polymorphism, providing a way to define generic interfaces that can be implemented by different types.
+    - **Type Families**: Type families let you associate types with type classes, allowing for more flexible and dynamic behavior based on types.
+    - **Phantom Types**: Phantom types allow you to add extra type safety without affecting runtime behavior. They’re especially useful for encoding additional constraints or metadata into the type system.
+    - **Type-Level Programming**: Haskell allows for type-level programming, enabling you to enforce constraints at the type level and reducing the need for runtime checks.
+
+These are the building blocks of functional programming in Haskell and the key to creating robust, type-safe applications. By mastering types and domain modeling, you’re well on your way to becoming a proficient Haskell developer.
+
+### Exercises
+
+Now it’s time to put what you’ve learned into practice. The following exercises will help reinforce the concepts from this lesson by challenging you to think through real-world domain problems and apply Haskell’s type system effectively.
+
+#### Exercise 1: Modeling a Banking System
+
+**Objective**: Create a simple banking system using domain-driven design principles.
+
+- Define the following types:
+    - `AccountId`: A unique identifier for a bank account.
+    - `Balance`: The current balance in the account (use a custom type to prevent negative balances).
+    - `TransactionType`: An algebraic data type representing deposits and withdrawals.
+    - `Transaction`: A record type representing a transaction (including the type and the amount).
+- Write a function `applyTransaction :: Balance -> Transaction -> Maybe Balance` that updates the balance based on the transaction. Ensure that withdrawals cannot exceed the balance.
+
+**Hint**: Use a custom type to ensure that `Balance` can never be negative.
+
+```haskell
+-- Example skeleton
+newtype Balance = Balance Float
+data TransactionType = Deposit | Withdrawal
+data Transaction = Transaction { tType :: TransactionType, amount :: Float }
+
+applyTransaction :: Balance -> Transaction -> Maybe Balance
+-- Implement your function here
+```
+
+#### Exercise 2: Aggregating Data from Multiple Vendors
+
+**Objective:** Model a system that aggregates data from three different vendors.
+
+- Define a custom type Vendor with constructors VendorA, VendorB, and VendorC.
+- Create a type DataFeed to represent real-time data from each vendor (e.g., temperature, humidity, and pressure).
+- Write a function aggregateFeeds :: DataFeed -> DataFeed -> DataFeed -> DataFeed that combines the data from each vendor, selecting the most recent valid data for each field.
+
+**Hint:** Use Maybe types for fields that might be missing, and use pattern matching to choose valid data.
+
+```haskell
+-- Example skeleton
+data Vendor = VendorA | VendorB | VendorC
+data DataFeed = DataFeed { temperature :: Maybe Float, humidity :: Maybe Float, pressure :: Maybe Float }
+
+aggregateFeeds :: DataFeed -> DataFeed -> DataFeed -> DataFeed
+-- Implement your function here
+```
+
+#### Exercise 3: Using Phantom Types for Unit Safety
+
+**Objective:** Prevent unit mix-ups using phantom types.
+
+- Define two phantom types Meters and Kilometers.
+- Create a Distance type that uses phantom types to represent distances in meters or kilometers.
+- Write a function convertToKilometers :: Distance Meters -> Distance Kilometers that converts a distance in meters to kilometers.
+- Try to add distances in meters and kilometers together, and make sure the compiler prevents it!
+
+```haskell
+-- Example skeleton
+data Meters
+data Kilometers
+
+data Distance a = MkDistance Double
+
+convertToKilometers :: Distance Meters -> Distance Kilometers
+-- Implement your function here
+```
+
+
 
 
 **Lesson 2 - Immutability Changes Everything**
