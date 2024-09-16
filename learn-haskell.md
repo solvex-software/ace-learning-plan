@@ -1,6 +1,5 @@
 # Haskell Tutorial #
 
-
 # Introduction
 
 ## Why Learn Haskell? The Rise of Functional Programming
@@ -1054,190 +1053,182 @@ In this example:
 - This ensures that invalid states (e.g., negative balances) are impossible to represent.
 
 
+## Advanced Type Concepts
 
+In this section, we’ll introduce some of Haskell’s more advanced type concepts, such as type classes, type families, phantom types, and type-level programming. You don’t need to learn these concepts right away, but knowing how to recognize them and having a basic understanding of how they work will help you expand your knowledge over time.
 
+### Type Classes and Overloading
 
+**Type classes** are one of the most powerful features in Haskell. They provide a way to define generic interfaces that can be implemented by different types. Type classes allow for **ad hoc polymorphism**, meaning that you can write functions that work with any type as long as that type implements certain behavior (i.e., is an instance of a type class).
 
+Think of type classes like interfaces in object-oriented programming. However, type classes are more flexible and allow Haskell’s type system to express a wide range of concepts while ensuring type safety.
 
+#### Example: The `Eq` Type Class
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Rough draft template: ###
-
-
-**Introduction**
-
-Modern OO is copying FP because it’s better, but OO compilers can’t handle its requirements
-its growing, microsoft is adapting it, hiring simon peyton jones. Tim Sweeny with Simon on Verse. Tesla, SpaceX, & Neuralink using Haskell. <gpt: Find examples.>
-Why does FP matter? (Immutability, generative testing, pure functions, laziness, etc.)
-
-
-<Read this to set up your development environment and get used to using the interactive REPL (GHCI)> # todo: link to document on this
-
-
-**Lesson 0 - Think like a Functional Programmer**
-
-How to approach problem solving - every problem is the same
-- the best way to go about problem solving is using first principles analysis. By modelling the ground-roots information about the space the problem exists within, we can greatly increase our understanding of the problem and thus simplify our implementation and ensure it works.
-  - <gpt: example of this in haskell code>
-- when we have a model of the problem space, we can take baby-steps towards solving it.
-- First, we identify what the inputs to our problem are. If the problem is that we need a way to handle payments for our users, the inputs to this might be the cart of items, where each item has an item id and name. It might also include an encrypted reference to the users payment details on a platform like Stripe or PayPal, or just the connection to Stripe itself. We have to define what information we need to solve the problem, before we can start thinking about the solution. The solution is the last thing we think about, and it's often obvious by the time we implement it.
-- We then define what the outputs of our problem space are. What are the things that need to happen? Well, we need to allow someone to make a payment, we need to be sure that the payment went through and handle cases where it doesn't, and then we need to ultimately create an order and track it's fulfillment. We can model this like so:
-   - <gpt: use domain modelling in haskell to map this out at a high level>
-- Finally, we create the transformation functions which actually make your application work. Starting with type signatures, we can start to reason about what each function will need to do.
-    - <gpt: create stubbed transformation functions with type signatures to fulfil this example>
-- When creating functions, it's best for us to think about them in small components. Try to make their responsiblities very minimal and reusable. Haskell gives us a lot of ways to compose functions together, and as you go through this program, you will learn a bunch of neat ways to do this. Haskell is actually very simple, but it becomes complex due to the number of ways you can modify it. Always look up the function signatures of functions you are unfamiliar about and try to reason about them one property at a time. 
-- <gpt: steal ideas from "think like a programmer" book and round this out with functional programming mindset.>
-  
-How to build an application / what is a functional application?
-- An application is a sequence of instructions that run along a timeline. <gpt: dive into this more in detail>
-- Traditional procedural and object-oriented approaches that dominate the industry have inherent issues where the state is hidden from the user at runtime, causing a sleiu of issues that the industry attempts to wrangle during runtime.
-- With functional programming, our entire application must abide by the laws of mathematics and must compile down to a single function. When it's done, it would look like one massive math equation that fills a chalk-board. The important thing to note is that the identity of a functional program is itself, meaning that everything within the functional application is pure and will always produce the same result. (Even if it has side effects that you can't control). For those who have done a fair amount of programming in procedural and object-oriented languages, particularly dynamically typed ones, know how much of a pain this can be. If you're just starting out now, be thankful you don't have to deal with any of that! A little more effort up-front will make us far better programmers than our industry competition.
-
-
-Different types of applications have different requirements for safety. FP is hands down better for risky codebases.
-- As I alluded to above, FP gives us a special guarantee that over the entire program-flow of our application, we will not receive an unexpected result. This is because the pure nature of the compiler forces us to turn exceptions into expectations.
-  - <gpt: example of above>
-- This makes it especially powerful for software applications that require precision, reliability, and scalability with the cost of either human life or significant amounts of capital; such as those found in the medical, industrial, finance, agriculture, defence, and space industries.
-- <gpt: reasons why FP is being used by these types of industries, case studies, etc.>
-
-
-**Lesson 1 - Types & Domain Theory**
-
-a) introduction to types
-What are types?
-
-- Types are a way to categorize data. The closer the types model the real world, the easier your application becomes to reason about, and the more robust it becomes
-- They are labelled sets of data with one or more variations
-- They represent the information our application is processing
-- They are used in functions to ensure that functions receive and return the correct kinds of data
-- In functional programming every input must have a valid output within the context it’s being called, and so we can’t just mutate state directly as functions always return a value rather than mutate them. This means that the internal workings of the functions must also be correct
-
-<gpt: generate examples of String, Integer, Boolean, and how they are used in Haskell for safety>
-
-How are Types in FP different?
-in haskell types are first class citizens, treated as values in the compiler, allowing you to encode complex logic directly into your types, leading to predictable and safe code.
-in other popular languages, the imlementation for this will vary and is often either not possible or not practical due to either extensive boilerplate or an inability to predict state im deep areas of execution due to poor state management restrictions.
-
-tons of features that make them better to work with, faster to write, etc. but really the magic comes in the way the hindley-milner type system handles currying to ensure that execution (even partially applied) works at every step because every cardinality has been defined and is mathematically sound.
-
-<gpt: reference points from discussion on types in c# vs haskell>
-
-Why Types Matter
-- having strict and well thought-out types is crucial to robust system dsign. it can become very easy for code to become unreadable and have unknown side-effects and faults at runtime. this risk increases exponentially with every additional developer that touches the codebase.
-- being able to read and understand everything something does by simply looking at a type signature is amazing for clarity of design requirements, allowing us to change our code quickly to adapt to the dynamic business environment.
-- in functional programming you can often reason about what code does before you even look at the details of it, just based on the types. You can search for functions on Hoogle (yes, Hoogle) that match the type signature you're looking for, and with partial appplication it becomes trivial to integrate the correct function you are looking for. this makes it bery easy to reason about code changes and to do so safely, as the compiler won't let us bind a function that doesnt fit its type constraints.
-<gpt: generate examples of compiler failures that would be typical gotchas in procedural programming. show the code, and i will run it to show the compiler error, unless you're able to do that for me>
-
-b) simple types and type signatures
-
-How to Read Type Signatures
-- A type signature describes the types of the inputs a function takes and the type of output it produces.
-- a typical type signature looks like this
-- ``haskell
-functionName :: InputType1 -> InputType2 -> OutputType
-- can be as conplex as this: <gpt: (show a complex obelisk/reflex type for cross platform mobile)>
-- they are really all doing the same. specifying the flow of the types through the function. REMEMBER partial application, as it can be a gotcha for newbies when reading more complex type signatures, and if used well can be used to sinplify complex type signatures. for now we will stick with relatively simple types.
-- Break down the type signature into the inputs (everything before the last ->) and the output (the type after the last ->).
-- Understand that Haskell functions are curried, meaning every function actually takes one argument and returns another function if more arguments are needed.
-- <show example of currying in explocit detail, and how the compiler hides it from us>
-- quick note on forall
-
-Primitive Types
-Primitive types in Haskell are the basic building blocks for more complex types. They represent simple values like numbers, characters, and booleans.
-
-Common Primitive Types
-
-	•	Int: Represents a fixed-size integer. Example: 42.
-	•	Integer: Represents an arbitrary-precision integer. Example: 12345678901234567890.
-	•	Float: Represents a single-precision floating-point number. Example: 3.14.
-	•	Double: Represents a double-precision floating-point number. Example: 2.71828.
-	•	Char: Represents a single character. Example: 'a'.
-	•	Bool: Represents a boolean value (True or False). Example: True.
-	•	String: Represents a sequence of characters (a list of Char). Example: "Hello, world!".
-
-Examples:
+The `Eq` type class defines an interface for equality testing. If a type is an instance of `Eq`, you can use the `(==)` and `(/=)` operators to compare values of that type.
 
 ```haskell
--- Integer
-age :: Int
-age = 30
+class Eq a where
+    (==) :: a -> a -> Bool
+    (/=) :: a -> a -> Bool
 
--- Floating-point number
-piValue :: Double
-piValue = 3.14159
+-- Making a custom data type an instance of Eq
+data Color = Red | Green | Blue
 
--- Boolean
-isSunny :: Bool
-isSunny = True
+instance Eq Color where
+    Red == Red     = True
+    Green == Green = True
+    Blue == Blue   = True
+    _ == _         = False
 
--- Character
-initial :: Char
-initial = 'H'
-
--- String
-greeting :: String
-greeting = "Hello, Haskell!"
+-- Example usage:
+isEqual :: Color -> Color -> Bool
+isEqual Red Green = Red == Green -- False
 ```
 
-Polymorphic Types
-- polymorphism
-- type class constraints
+In this example:
 
-Algebraic Data Types (ADTs)
+- We define the Color data type with three possible values: Red, Green, and Blue.
+- We make Color an instance of the Eq type class by defining how equality works for the Color type.
+- Once we’ve defined this, we can compare Color values using the == operator.
 
+### Overloading Functions with Type Classes
 
-c) domain driven design
+Type classes also allow us to overload functions. A function can behave differently depending on the type of the arguments it receives, as long as the type is an instance of the relevant type class.
 
-What is Domain Driven Design?
-- methodology for structuring software around a business domain
-- model real world concepts in code, avoiding all use of primitives except at the leaf level.
-- use the language that the client uses, not some made up tertiary language in our code. often times clients are actually able to assist in the design of our domain IN CODE because its so readable to them. it just looks like plain english when you've done it correctly.
-- <gpt: example of domain driven design implemented very well for the home robot example.>
+For example, the + operator is overloaded by the Num type class, which defines numeric operations:
 
-Modelling the Domain with Types
-- <gpt: generate an example where the arm rotations and actuators developed by one team need to match the specs of the Torso seveloped by the other team, with the Shoulder as the integration point. create a hypothetical scenario for this, and provide a quick background summary>
+```haskell
+class Num a where
+    (+) :: a -> a -> a
+    -- other numeric operations...
+```
 
-Defining Domain Concepts as Types
-- the type system in Haskell is very powerful. it can be used to define more than just basic types. we can model complex concepts into the type system themselves.
-- say we had a realtime waterfall feed from 3 different space agencies, all with slightly different formatting, existence of variables, etc. some need to be aggregated in different manners than others, but at the end of the day we need to provide a realtime feed with accurate data based on one of these three. there will be a round-robin to see which value is most accurate using validation and then that balhe will be served. this is to handle redundancy and delays in updates from our vendors.
-- <gpt: generate a highly complex and fully implemented domain model for this in Haskell, using type classes, type families, sum types, and whatever else you see fit for this example.>
+This means that + can be used with any type that’s an instance of Num (like Int, Float, etc.).
 
-d) Pairing Domain Theory with Type Theory
+### Polymorphism with Type Classes
 
-Type Theory in the Context of Domain Modelling
+You can define polymorphic functions that work with any type that’s an instance of a specific type class. Here’s an example of a polymorphic function that works with any type that implements the Show type class (which is responsible for converting values to strings):
 
-Ensuring Valid States with Types
+```haskell
+printValue :: Show a => a -> String
+printValue value = "The value is: " ++ show value
+```
 
-How the Compiler Infers Types 
+Here, Show a => is a type class constraint. It means that printValue can accept any type a as long as a is an instance of the Show type class. The function then uses the show function (which converts a value to a String) to display the value.
 
+### Type Families
 
-e) Advanced Type Concepts
-- dont need to learn these now but you can if you want, and its good to know at least how to identify syntax that you don't know to help learn it, as sometimes seeing it in a certain context will make it "click".
+Type families are a more advanced feature that allows you to associate types with type classes, effectively creating a form of type-level functions. They enable more flexibility and power in type classes, allowing for more dynamic behavior based on types.
 
-Type Classes and Overloading
+Example: Type Families for Different Container Types
 
-Type Families
+Let’s say we want to define a type class for container-like data structures (e.g., List, Maybe, etc.), but we want to allow different types of elements in these containers. Type families can help us here.
 
-Phantom Types for Extra Type Safety
+```haskell
+{-# LANGUAGE TypeFamilies #-}
 
-Type-Level Programming
+class Container c where
+    type Element c
+    empty :: c
+    insert :: Element c -> c -> c
+
+-- List instance of Container
+instance Container [a] where
+    type Element [a] = a
+    empty = []
+    insert x xs = x : xs
+
+-- Maybe instance of Container
+instance Container (Maybe a) where
+    type Element (Maybe a) = a
+    empty = Nothing
+    insert x _ = Just x
+```
+
+In this example:
+
+- We define a Container type class with a type family Element c, which represents the type of elements that can be stored in the container.
+- We then provide two instances: one for lists ([a]) and one for Maybe a. Each instance defines what kind of elements can be inserted and how to handle insertion and the “empty” state.
+
+### Phantom Types for Extra Type Safety
+
+Phantom types are an advanced feature in Haskell where a type parameter is included in the type definition but is not used in the actual data. They are useful for adding extra type safety to your programs, especially when you want to encode additional constraints or metadata into the types.
+
+#### Example: Phantom Types for Unit Safety
+
+Let’s say we want to create a system that tracks distances, but we want to make sure that we never accidentally mix up meters and kilometers.
+
+```haskell
+{-# LANGUAGE GADTs #-}
+
+data Meters
+data Kilometers
+
+data Distance a where
+    MkDistance :: Double -> Distance a
+
+convertToKilometers :: Distance Meters -> Distance Kilometers
+convertToKilometers (MkDistance d) = MkDistance (d / 1000)
+
+-- Example usage
+distanceInMeters :: Distance Meters
+distanceInMeters = MkDistance 5000
+
+distanceInKilometers :: Distance Kilometers
+distanceInKilometers = convertToKilometers distanceInMeters
+```
+
+In this example:
+
+- We define two phantom types, Meters and Kilometers, which represent the units of distance.
+- The Distance a type takes a phantom type a, which is either Meters or Kilometers. This ensures that distances are always associated with a specific unit.
+- We define a convertToKilometers function that safely converts a distance in meters to kilometers.
+
+With phantom types, you can ensure that your code is type-safe at compile time, preventing errors like mixing up units of measurement.
+
+### Type-Level Programming
+
+Haskell allows for type-level programming, where types can be manipulated much like values. This opens the door to highly expressive and type-safe code. You can perform computations and enforce constraints at the type level, reducing the need for runtime checks.
+
+#### Example: Type-Level Natural Numbers
+
+We can use type-level programming to represent physical dimensions (e.g., length, mass, time) and ensure that our units are consistent in mathematical operations.
+
+```haskell
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeOperators #-}
+
+data Meter
+data Second
+
+data Quantity (unit :: *) where
+    MkQuantity :: Double -> Quantity unit
+
+-- Adding two quantities of the same unit
+addQuantities :: Quantity unit -> Quantity unit -> Quantity unit
+addQuantities (MkQuantity x) (MkQuantity y) = MkQuantity (x + y)
+
+-- Example usage
+distance :: Quantity Meter
+distance = MkQuantity 100
+
+time :: Quantity Second
+time = MkQuantity 9.58
+
+-- This works:
+sumDistance = addQuantities distance distance
+
+-- This would fail to compile if uncommented (mismatched units):
+-- sumTimeDistance = addQuantities distance time
+```
+
+In this example:
+
+- We define a Quantity type that takes a unit (e.g., Meter or Second) as a type parameter.
+- The addQuantities function ensures that we can only add quantities of the same unit.
+- If we try to add a distance to a time, Haskell’s type system will catch this error at compile time.
 
 
 f) Recap & Exercises
