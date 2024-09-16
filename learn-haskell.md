@@ -720,6 +720,163 @@ area (Square s) = s * s
 
 In this example, the area function computes the area of a Shape. It uses pattern matching to determine whether the shape is a Circle, Rectangle, or Square, and calculates the area accordingly.
 
+## c) Domain-Driven Design
+
+### What is Domain-Driven Design?
+
+Domain-Driven Design (DDD) is a methodology for structuring software around a business domain. It’s all about creating a deep understanding of the business or system you’re building and then reflecting that understanding directly in your code. The goal is to model real-world concepts with code that mirrors the domain as closely as possible.
+
+In essence:
+- **Model Real-World Concepts**: In DDD, the focus is on modeling the real world as accurately as possible, avoiding the use of primitive types like `Int` and `String` except at the "leaf" levels (e.g., values or properties that directly map to basic concepts like age or names). Instead, we create types that describe domain-specific concepts like `CustomerId`, `OrderId`, or `RobotArmAngle`. These types are meaningful and self-explanatory in the domain.
+  
+- **Use Domain Language**: A key principle of DDD is using the same language that the client uses to describe their domain. This means that, when you’re building a system for a specific business or project, you use terms that make sense to the client. Ideally, your client should be able to understand your code—or at least be able to provide meaningful input into the design of your domain models. When you’ve done it right, your code should read like plain English to domain experts.
+
+#### Example of Domain-Driven Design
+
+Imagine you're tasked with building a home robot system, where one of its key functionalities is to interact with objects around the house. The robot needs to perform tasks like picking up objects, turning knobs, and pressing buttons. Your client, an engineer with expertise in robotics, describes the system using terms like “robot arm,” “actuator,” “gripper,” and “torque.”
+
+If you model this system using primitives (`Int`, `String`, `Float`), your code might look something like this:
+
+```haskell
+pickUp :: Int -> Float -> String -> Bool
+pickUp armId rotation gripper = -- perform task
+```
+
+This code uses generic types like Int, Float, and String, which have no meaningful connection to the domain concepts. The client would have a hard time understanding what this function does or whether it models the domain correctly.
+
+Instead, with DDD, you would model the system using types that reflect the domain:
+
+```haskell
+data RobotArm = RobotArm ArmId Rotation Torque
+data Gripper = Gripper GripperType GripStrength
+
+pickUp :: RobotArm -> Gripper -> Object -> TaskResult
+pickUp arm gripper object = -- perform task
+```
+
+Now the function pickUp uses domain-specific types (RobotArm, Gripper, Object, TaskResult), making it easier for your client to understand and ensuring that your code accurately models the real-world system. The types tell you a lot more about what’s going on, reducing ambiguity and making your system safer and easier to reason about.
+
+Modelling the Domain with Types
+
+Let’s look at a more complex example to illustrate how types can model real-world interactions between different parts of a system.
+
+Example Scenario: Robot Arm and Torso Integration
+
+Imagine a robotics project where one team is responsible for building the robot’s arm, and another team is responsible for the torso. The two components need to be integrated at the shoulder joint. The arm has actuators that rotate at certain angles, and the torso needs to provide power to these actuators. Both teams are working independently, and the shoulder becomes the integration point for the two components.
+
+Hypothetical Background:
+
+- The Arm Team is working with actuators that rotate between 0 and 180 degrees.
+- The Torso Team is responsible for delivering power, ensuring that the arm’s actuators receive enough power to function.
+- The Shoulder acts as the integration point where the power and rotation capabilities meet.
+
+We need to model the interaction between these systems, ensuring that the power delivered by the torso matches the requirements of the actuators in the arm.
+
+Example Code:
+
+
+```haskell
+-- Define the arm's actuators and rotation
+data Rotation = Rotation Int -- value in degrees between 0 and 180
+data Actuator = Actuator Rotation Torque
+
+-- Define the torso's power capabilities
+data PowerSupply = PowerSupply Torque -- Torque provided to the actuators
+
+-- Define the shoulder as the integration point
+data Shoulder = Shoulder Actuator PowerSupply
+
+-- Function to match the power provided by the torso with the actuator's requirements
+integrateShoulder :: Shoulder -> Bool
+integrateShoulder (Shoulder (Actuator (Rotation angle) torque) (PowerSupply supplyTorque))
+    | torque <= supplyTorque = True -- Power matches or exceeds the actuator's requirement
+    | otherwise = False -- Insufficient power
+```
+
+In this example:
+
+- We’ve modeled Rotation, Actuator, and PowerSupply using Haskell’s type system to reflect the real-world domain.
+- The function integrateShoulder checks whether the power supplied by the torso is sufficient for the actuators in the arm to function properly.
+
+This domain model allows us to precisely describe the real-world system, ensuring that the interaction between the arm and torso is modeled correctly. By using meaningful types, we avoid the pitfalls of using primitives like Int and Float, which don’t convey the intent or constraints of the system.
+
+### Defining Domain Concepts as Types
+
+Haskell’s type system is incredibly powerful and can be used to model much more than just basic data structures. You can define complex concepts using types, allowing you to encode domain-specific logic directly into the type system.
+
+Example: Aggregating Data from Space Agencies
+
+Let’s say we’re building a system that aggregates real-time data from three different space agencies. Each agency provides slightly different data formats, and some of the data might be missing or delayed. To ensure reliability, we need to aggregate the data and serve the most accurate, up-to-date information to the end user. We’ll validate the data using a round-robin algorithm to determine which data is most trustworthy.
+
+Complex Domain Model:
+
+```haskell
+-- Define a type for data from Space Agencies
+data SpaceAgency = NASA | ESA | JAXA
+
+-- Define a type for the data each agency provides
+data SpaceData = SpaceData {
+    temperature :: Maybe Float,
+    pressure    :: Maybe Float,
+    velocity    :: Maybe Float
+}
+
+-- A type class to validate data from each agency
+class ValidateData a where
+    validate :: a -> Bool
+
+instance ValidateData SpaceData where
+    validate (SpaceData temp press vel) = all isJust [temp, press, vel]
+
+-- Define a type for the round-robin algorithm to choose the most accurate data
+data RoundRobin = RoundRobin SpaceData SpaceData SpaceData
+
+-- Function to aggregate data from multiple agencies and serve the best one
+aggregateData :: RoundRobin -> SpaceData
+aggregateData (RoundRobin nasa esa jaxa)
+    | validate nasa = nasa
+    | validate esa  = esa
+    | validate jaxa = jaxa
+    | otherwise     = error "All data invalid"
+
+-- Example usage
+nasaData = SpaceData (Just 20.5) (Just 1013.25) Nothing
+esaData = SpaceData (Just 20.4) (Just 1013.30) (Just 7500)
+jaxaData = SpaceData Nothing (Just 1013.20) (Just 7501)
+
+main = print $ aggregateData (RoundRobin nasaData esaData jaxaData)
+```
+
+In this example:
+
+- We define the SpaceData type, which represents the real-time data from each space agency. Some fields may be missing (Maybe Float), which we handle explicitly.
+- The ValidateData type class allows us to check whether the data provided by each agency is complete and valid.
+- The RoundRobin type models the round-robin algorithm used to select the most reliable data.
+- The aggregateData function aggregates data from NASA, ESA, and JAXA, and returns the most accurate dataset based on the validation criteria.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ### Rough draft template: ###
