@@ -855,6 +855,205 @@ In this example:
 - The aggregateData function aggregates data from NASA, ESA, and JAXA, and returns the most accurate dataset based on the validation criteria.
 
 
+## Pairing Domain Theory with Type Theory
+
+### Type Theory in the Context of Domain Modeling
+
+In Haskell, type theory goes hand in hand with domain-driven design. Domain theory helps you model the real world by representing domain concepts in code, while type theory ensures that your code is precise, safe, and free from common runtime errors. The power of Haskell’s type system lies in its ability to **perfectly describe your problem space**.
+
+#### How Types Make Domains Safer
+
+When you define a domain model, you're not just giving names to concepts—you're also giving those concepts constraints and rules through types. For example:
+- **Simple types like `Int` or `String`** don’t carry much meaning by themselves. They could be anything.
+- **Custom types like `CustomerId` or `Temperature`** represent specific concepts in your domain and ensure that values are used in appropriate contexts. By encoding your domain logic directly into types, you prevent mistakes like accidentally passing an email address where a `CustomerId` is expected.
+
+Let’s break this down with a simple example.
+
+#### Example: Defining Safe Domain Concepts
+
+Consider an online shopping platform. You’ll have concepts like customers, orders, and products. You could model these using primitives like `Int` and `String`, but this opens the door to mistakes:
+
+```haskell
+-- This is unsafe
+createOrder :: Int -> String -> String -> Int -> Bool
+createOrder customerId productName address quantity = -- Implementation
+```
+
+In this version, we’re using Int and String everywhere, which doesn’t reflect the domain at all. It’s easy to accidentally swap parameters or use invalid values.
+
+With type theory, we can give more meaning and safety to the domain:
+
+```haskell
+-- Safe version using custom types
+newtype CustomerId = CustomerId Int
+newtype ProductName = ProductName String
+newtype Address = Address String
+newtype Quantity = Quantity Int
+
+createOrder :: CustomerId -> ProductName -> Address -> Quantity -> Bool
+createOrder (CustomerId custId) (ProductName prodName) (Address addr) (Quantity qty) = -- Implementation
+```
+
+By defining types like CustomerId, ProductName, Address, and Quantity, we give more meaning to our code. The type signature for createOrder now clearly reflects what the function does, and we prevent mistakes like passing an address where a ProductName is expected.
+
+### Ensuring Valid States with Types
+
+One of the most powerful aspects of Haskell’s type system is that it allows you to enforce valid states directly in the type system. This means you can encode business rules or constraints into your types, making it impossible to represent invalid states.
+
+#### Example: Preventing Invalid Orders
+
+Let’s extend our Order example. In a typical e-commerce application, an order should never have a negative quantity, and it should always have a valid product. We can enforce these rules in the type system.
+
+Basic Example (with risk of invalid states):
+
+```haskell
+data Order = Order Int String Int -- CustomerId, ProductName, Quantity
+```
+
+In this version, there’s nothing stopping us from creating an Order with an invalid product name or a negative quantity.
+
+Improved Example (enforcing valid states):
+
+```haskell
+newtype CustomerId = CustomerId Int
+newtype ProductName = ProductName String
+newtype Address = Address String
+newtype Quantity = Quantity Int
+
+data ValidatedOrder = ValidatedOrder CustomerId ProductName Address Quantity
+```
+
+But we can go even further to ensure that only valid orders can exist:
+
+```haskell
+newtype NonEmptyString = NonEmptyString String
+    deriving (Show)
+
+mkNonEmptyString :: String -> Maybe NonEmptyString
+mkNonEmptyString "" = Nothing
+mkNonEmptyString str = Just (NonEmptyString str)
+
+newtype PositiveInt = PositiveInt Int
+    deriving (Show)
+
+mkPositiveInt :: Int -> Maybe PositiveInt
+mkPositiveInt n
+    | n > 0     = Just (PositiveInt n)
+    | otherwise = Nothing
+
+data Order = Order {
+    customerId :: CustomerId,
+    productName :: NonEmptyString,
+    address :: NonEmptyString,
+    quantity :: PositiveInt
+}
+
+createOrder :: CustomerId -> String -> String -> Int -> Maybe Order
+createOrder cid pName addr qty = do
+    pName' <- mkNonEmptyString pName
+    addr'  <- mkNonEmptyString addr
+    qty'   <- mkPositiveInt qty
+    return $ Order cid pName' addr' qty'
+```
+
+
+In this version:
+
+- NonEmptyString ensures that product names and addresses can never be empty.
+- PositiveInt ensures that quantities are always positive.
+
+The createOrder function now returns a Maybe Order, meaning that it will only produce a valid Order if all the inputs meet the necessary conditions. This way, you can guarantee at compile time that no invalid orders can be created.
+
+### How the Compiler Infers Types
+
+Haskell’s compiler is powerful enough to infer types even if you don’t explicitly annotate them. However, it’s always a good idea to include type signatures for clarity and better error checking.
+
+### Example of Type Inference:
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+```
+
+Even if you omit the type signature, Haskell can infer that add takes two Ints and returns an Int:
+
+```haskell
+add x y = x + y -- Haskell infers: add :: Int -> Int -> Int
+```
+
+### Type Inference with Polymorphism:
+
+Haskell can also infer types for polymorphic functions. For example:
+
+```haskell
+identity x = x
+```
+
+Haskell infers that identity can work with any type, so the type signature becomes:
+
+```haskell
+identity :: a -> a
+```
+
+In this case, a is a type variable, meaning that identity can take and return any type.
+
+#### Practical Example: Modelling a Bank Account System
+
+To see how type theory and domain modeling work together in a real-world scenario, let’s model a banking system.
+
+1. Domain Concepts:
+- Account: Represents a bank account.
+- Transaction: Represents a deposit or withdrawal.
+- Balance: Represents the current balance of the account.
+2. Domain-Specific Types:
+- We’ll define custom types for these concepts to ensure that invalid states (e.g., negative balances, invalid transactions) are impossible.
+
+Example Code:
+
+```haskell
+newtype AccountId = AccountId Int
+newtype Amount = Amount Float
+    deriving (Show)
+
+data TransactionType = Deposit | Withdrawal
+    deriving (Show)
+
+data Transaction = Transaction {
+    transactionType :: TransactionType,
+    amount :: Amount
+} deriving (Show)
+
+data Account = Account {
+    accountId :: AccountId,
+    balance   :: Amount
+} deriving (Show)
+
+-- Function to apply a transaction to an account
+applyTransaction :: Account -> Transaction -> Maybe Account
+applyTransaction (Account accId (Amount bal)) (Transaction Deposit (Amount amt)) =
+    Just (Account accId (Amount (bal + amt)))
+
+applyTransaction (Account accId (Amount bal)) (Transaction Withdrawal (Amount amt))
+    | bal >= amt = Just (Account accId (Amount (bal - amt)))
+    | otherwise  = Nothing -- Prevent overdraft
+
+-- Example usage
+main = do
+    let account = Account (AccountId 1) (Amount 1000)
+    let deposit = Transaction Deposit (Amount 200)
+    let withdrawal = Transaction Withdrawal (Amount 1500)
+
+    print $ applyTransaction account deposit      -- Valid deposit
+    print $ applyTransaction account withdrawal   -- Invalid withdrawal (overdraft)
+```
+
+In this example:
+
+- AccountId, Amount, and Transaction are modeled using custom types.
+- The applyTransaction function ensures that withdrawals can only happen if there’s enough balance, preventing overdrafts.
+- This ensures that invalid states (e.g., negative balances) are impossible to represent.
+
+
 
 
 
